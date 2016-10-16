@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.ComponentModel;
 using UIKit;
 using Foundation;
 using ObjCRuntime;
@@ -147,6 +147,100 @@ namespace SpotifyAuthentication.iOS
 	}
 
 	// typedef void (^SPTAuthCallback)(NSError *, SPTSession *);
-	//delegate void SPTAuthCallback(NSError arg0, SPTSession arg1);
+	delegate void SPTAuthCallback(NSError arg0, SPTSession arg1);
 
+    // @interface SPTAuth : NSObject
+    [BaseType(typeof(NSObject))]
+    interface SPTAuth
+    {
+        [Static]
+        [Export("defaultInstance")]
+        SPTAuth DefaultInstance { get; }
+
+        [Export("clientID", ArgumentSemantic.Strong)]
+        string ClientID { get; set; }
+
+        [Export("redirectURL", ArgumentSemantic.Strong)]
+        string RedirectURL { get; set; }
+
+        [Export("requestedScopes", ArgumentSemantic.Strong)]
+        string[] RequestedScopes { get; set; }
+
+        [Export("allowNativeLogin"), DefaultValue("true")]
+        bool AllowNativeLogin { get; set; }
+
+        [Export("session", ArgumentSemantic.Strong)]
+        SPTSession Session { get; set; }
+
+        [Export("sessionUserDefaultsKey", ArgumentSemantic.Strong)]
+        string SessionUserDefaultsKey { get; set; }
+
+        [Export("tokenSwapURL", ArgumentSemantic.Strong)]
+        NSUrl TokenSwapURL { get; set; }
+
+        [Export("tokenRefreshURL", ArgumentSemantic.Strong)]
+        NSUrl TokenRefreshUrl { get; set; }
+
+        [Export("hasTokenSwapService")]
+        bool HasTokenSwapService { get; }
+
+        [Export("hasTokenRefreshService")]
+        bool HasTokenRefreshService { get; }
+
+        [Export("loginURL")]
+        NSUrl LoginURL { get; }
+
+        [Static]
+        [Export("loginURLForClientId:clientId:withRedirectURL:scopes:responseType:allowNativeLogin")]
+        NSUrl LoginURLForClientId(string clientId, NSUrl redirectUrl, string[] scopes, string responseType,
+            bool allowNativeLogin);
+
+        [Export("canHandleURL:")]
+        bool CanHandleUrl(NSUrl callbackUrl);
+
+        [Export("handleAuthCallbackWithTriggeredAuthURL:url:callback")]
+        void HandleAuthCallbackWithTriggeredAuthUrl(NSUrl url, SPTAuthCallback block);
+
+        [Static]
+        [Export("supportsApplicationAuthentication")]
+        bool SupportsApplicationAuthentication();
+
+        [Static]
+        [Export("spotifyApplicationIsInstalled")]
+        bool SpotifyApplicationIsInstalled();
+
+        [Export("renewSession:session:callback")]
+        void RenewSession(SPTSession session, SPTAuthCallback callback);
+    }
+
+    [BaseType(typeof(NSSecureCoding))]
+    interface SPTSession
+    {
+        [Export("canonicalUsername", ArgumentSemantic.Copy)]
+        string CanonicalUsername { get; }
+
+        [Export("accessToken", ArgumentSemantic.Copy)]
+        string AccessToken { get; }
+
+        [Export("encryptedRefreshToken", ArgumentSemantic.Copy)]
+        string EncryptedRefreshToken { get; }
+
+        [Export("ExpirationDate", ArgumentSemantic.Copy)]
+        NSDate ExpirationDate { get; }
+
+        [Export("tokenType", ArgumentSemantic.Copy)]
+        string TokenType { get; set; }
+
+        [Export("initWithUserName:userName:accessToken:expirationDate")]
+        IntPtr Constructor(string username, string accessToken, NSDate expirationDate);
+
+        [Export("initWithUserName:userName:accessToken:encryptedRefreshToken:expirationDate")]
+        IntPtr Constructor(string username, string accessToken, string encryptedRefreshToken, NSDate expirationDate);
+
+        [Export("initWithUserName:userName:accessToken:expirationTimeInterval")]
+        IntPtr Constructor(string username, string accessToken, double timeInterval);
+
+        [Export("isValid")]
+        bool IsValid();
+    }
 }
