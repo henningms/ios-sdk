@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Foundation;
+using SpotifyAuthentication.iOS;
 using UIKit;
 
 namespace SpotifyMetadata.iOS.Sample
@@ -24,14 +25,18 @@ namespace SpotifyMetadata.iOS.Sample
 			// Release any cached data, images, etc that aren't in use.
 		}
 
-		public override async void ViewDidAppear(bool animated)
+		public override void ViewDidAppear(bool animated)
 		{
 			base.ViewDidAppear(animated);
 
-			NSError error;
+			SPTAuth.DefaultInstance.ClientID = "cd7cc329b689452aa17a42330f2f63c0";
+			SPTAuth.DefaultInstance.RedirectURL = NSUrl.FromString("testmetadatalogin://callback");
+			SPTAuth.DefaultInstance.RequestedScopes = new[] {"streaming"};
 
-			var wat = SPTTrack.CreateRequestForTrack(new NSUrl("https://api.spotify.com/v1/tracks/0eGsygTp906u18L0Oimnem", ""), null, null, out error);
-			var l = 5;
+			var k = SpotifyAuthentication.iOS.Constants.SPTAuthStreamingScope;
+			var loginUrl = SPTAuth.DefaultInstance.LoginURL;
+
+			UIApplication.SharedApplication.OpenUrl(loginUrl);
 		}
 	}
 }

@@ -63,94 +63,80 @@ namespace SpotifyAuthentication.iOS
 	//
 	// For more information, see http://developer.xamarin.com/guides/ios/advanced_topics/binding_objective-c/
 	//
+	[Static]
+	[BaseType(typeof(NSObject))]
 	partial interface Constants
 	{
 		// extern double SpotifyAuthenticationVersionNumber;
-		[Static]
 		[Field("SpotifyAuthenticationVersionNumber", "__Internal")]
 		double SpotifyAuthenticationVersionNumber { get; }
 
 		// extern const unsigned char [] SpotifyAuthenticationVersionString;
-		[Static]
 		[Field("SpotifyAuthenticationVersionString", "__Internal")]
-		byte[] SpotifyAuthenticationVersionString { get; }
+		NSString SpotifyAuthenticationVersionString { get; }
 
 		// extern NSString *const SPTAuthStreamingScope;
-		[Static]
 		[Field("SPTAuthStreamingScope", "__Internal")]
 		NSString SPTAuthStreamingScope { get; }
 
 		// extern NSString *const SPTAuthPlaylistReadPrivateScope;
 		[Field("SPTAuthPlaylistReadPrivateScope", "__Internal")]
-		[Static]
 		NSString SPTAuthPlaylistReadPrivateScope { get; }
 
 		// extern NSString *const SPTAuthPlaylistReadCollaborativeScope;
 		[Field("SPTAuthPlaylistReadCollaborativeScope", "__Internal")]
-		[Static]
 		NSString SPTAuthPlaylistReadCollaborativeScope { get; }
 
 		// extern NSString *const SPTAuthPlaylistModifyPublicScope;
 		[Field("SPTAuthPlaylistModifyPublicScope", "__Internal")]
-		[Static]
 		NSString SPTAuthPlaylistModifyPublicScope { get; }
 
 		// extern NSString *const SPTAuthPlaylistModifyPrivateScope;
 		[Field("SPTAuthPlaylistModifyPrivateScope", "__Internal")]
-		[Static]
 		NSString SPTAuthPlaylistModifyPrivateScope { get; }
 
 		// extern NSString *const SPTAuthUserFollowModifyScope;
 		[Field("SPTAuthUserFollowModifyScope", "__Internal")]
-		[Static]
 		NSString SPTAuthUserFollowModifyScope { get; }
 
 		// extern NSString *const SPTAuthUserFollowReadScope;
 		[Field("SPTAuthUserFollowReadScope", "__Internal")]
-		[Static]
 		NSString SPTAuthUserFollowReadScope { get; }
 
 		// extern NSString *const SPTAuthUserLibraryReadScope;
 		[Field("SPTAuthUserLibraryReadScope", "__Internal")]
-		[Static]
 		NSString SPTAuthUserLibraryReadScope { get; }
 
 		// extern NSString *const SPTAuthUserLibraryModifyScope;
 		[Field("SPTAuthUserLibraryModifyScope", "__Internal")]
-		[Static]
 		NSString SPTAuthUserLibraryModifyScope { get; }
 
 		// extern NSString *const SPTAuthUserReadPrivateScope;
 		[Field("SPTAuthUserReadPrivateScope", "__Internal")]
-		[Static]
 		NSString SPTAuthUserReadPrivateScope { get; }
 
 		// extern NSString *const SPTAuthUserReadTopScope;
-		[Static]
 		[Field("SPTAuthUserReadTopScope", "__Internal")]
 		NSString SPTAuthUserReadTopScope { get; }
 
 		// extern NSString *const SPTAuthUserReadBirthDateScope;
-		[Static]
 		[Field("SPTAuthUserReadBirthDateScope", "__Internal")]
 		NSString SPTAuthUserReadBirthDateScope { get; }
 
 		// extern NSString *const SPTAuthUserReadEmailScope;
-		[Static]
 		[Field("SPTAuthUserReadEmailScope", "__Internal")]
 		NSString SPTAuthUserReadEmailScope { get; }
 
 		// extern NSString *const SPTAuthSessionUserDefaultsKey;
-		[Static]
-		[Field("SPTAuthSessionUserDefaultsKey", "__Internal")]
-		NSString SPTAuthSessionUserDefaultsKey { get; }
+		//[Field("SPTAuthSessionUserDefaultsKey", "__Internal")]
+		//NSString SPTAuthSessionUserDefaultsKey { get; }
 	}
 
 	// typedef void (^SPTAuthCallback)(NSError *, SPTSession *);
 	delegate void SPTAuthCallback(NSError arg0, SPTSession arg1);
 
     // @interface SPTAuth : NSObject
-    [BaseType(typeof(NSObject))]
+    [BaseType(typeof(NSObject), Name ="SPTAuth")]
     interface SPTAuth
     {
         [Static]
@@ -161,7 +147,7 @@ namespace SpotifyAuthentication.iOS
         string ClientID { get; set; }
 
         [Export("redirectURL", ArgumentSemantic.Strong)]
-        string RedirectURL { get; set; }
+		NSUrl RedirectURL { get; set; }
 
         [Export("requestedScopes", ArgumentSemantic.Strong)]
         string[] RequestedScopes { get; set; }
@@ -191,14 +177,14 @@ namespace SpotifyAuthentication.iOS
         NSUrl LoginURL { get; }
 
         [Static]
-        [Export("loginURLForClientId:clientId:withRedirectURL:scopes:responseType:allowNativeLogin")]
-        NSUrl LoginURLForClientId(string clientId, NSUrl redirectUrl, string[] scopes, string responseType,
+        [Export("loginURLForClientId:withRedirectURL:scopes:responseType:allowNativeLogin:")]
+		NSUrl LoginURLForClientId(string clientId, NSUrl redirectUrl, NSArray scopes, string responseType,
             bool allowNativeLogin);
 
         [Export("canHandleURL:")]
         bool CanHandleUrl(NSUrl callbackUrl);
 
-        [Export("handleAuthCallbackWithTriggeredAuthURL:url:callback")]
+        [Export("handleAuthCallbackWithTriggeredAuthURL:callback:")]
         void HandleAuthCallbackWithTriggeredAuthUrl(NSUrl url, SPTAuthCallback block);
 
         [Static]
@@ -209,12 +195,12 @@ namespace SpotifyAuthentication.iOS
         [Export("spotifyApplicationIsInstalled")]
         bool SpotifyApplicationIsInstalled();
 
-        [Export("renewSession:session:callback")]
+        [Export("renewSession:callback:")]
         void RenewSession(SPTSession session, SPTAuthCallback callback);
     }
 
-    [BaseType(typeof(NSSecureCoding))]
-    interface SPTSession
+	[BaseType(typeof(NSObject))]
+	interface SPTSession : INSSecureCoding
     {
         [Export("canonicalUsername", ArgumentSemantic.Copy)]
         string CanonicalUsername { get; }
@@ -232,7 +218,7 @@ namespace SpotifyAuthentication.iOS
         string TokenType { get; set; }
 
         [Export("initWithUserName:userName:accessToken:expirationDate")]
-        IntPtr Constructor(string username, string accessToken, NSDate expirationDate);
+		IntPtr Constructor(string username, string accessToken, NSDate expirationDate);
 
         [Export("initWithUserName:userName:accessToken:encryptedRefreshToken:expirationDate")]
         IntPtr Constructor(string username, string accessToken, string encryptedRefreshToken, NSDate expirationDate);

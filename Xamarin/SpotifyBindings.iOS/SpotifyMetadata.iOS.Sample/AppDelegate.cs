@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using SpotifyAuthentication.iOS;
 using UIKit;
 
 namespace SpotifyMetadata.iOS.Sample
@@ -9,6 +10,8 @@ namespace SpotifyMetadata.iOS.Sample
 	public class AppDelegate : UIApplicationDelegate
 	{
 		// class-level declarations
+
+		public static SPTSession SpotifySession { get; set; }
 
 		public override UIWindow Window
 		{
@@ -53,6 +56,34 @@ namespace SpotifyMetadata.iOS.Sample
 		public override void WillTerminate(UIApplication application)
 		{
 			// Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
+		}
+
+		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+		{
+			if (SPTAuth.DefaultInstance.CanHandleUrl(url))
+			{
+				SPTAuth.DefaultInstance.HandleAuthCallbackWithTriggeredAuthUrl(url, (error, session) =>
+				{
+					if (error != null)
+					{
+						var l = 5;
+						return;
+					}
+
+					SpotifySession = session;
+
+					System.Diagnostics.Debug.WriteLine("Requesting current user");
+
+					SPTUser.RequestCurrentUserWithAccessToken(session.AccessToken, (uError, user) =>
+					{
+						System.Diagnostics.Debug.WriteLine("WGJOGJSG");
+						var k = 6;
+					});
+				});
+				return true;
+			}
+
+			return base.OpenUrl(application, url, sourceApplication, annotation);
 		}
 	}
 }

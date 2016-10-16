@@ -13,3 +13,4 @@ namespace SpotifyMetadata.iOS.Sample
 		}
 	}
 }
+'

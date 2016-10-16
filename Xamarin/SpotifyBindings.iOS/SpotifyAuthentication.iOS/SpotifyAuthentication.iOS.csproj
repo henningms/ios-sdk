@@ -43,8 +43,9 @@
     <ObjcBindingCoreSource Include="Structs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="Native References/SpotifyAuthentication.framework">
+    <NativeReference Include="..\..\..\SpotifyAuthentication.framework">
       <Kind>Framework</Kind>
+      <SmartLink>False</SmartLink>
     </NativeReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />

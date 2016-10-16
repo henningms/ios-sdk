@@ -124,6 +124,10 @@
       <Project>{20D31722-76DB-4A84-B916-1704FE6429AE}</Project>
       <Name>SpotifyMetadata.IOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SpotifyAuthentication.iOS\SpotifyAuthentication.iOS.csproj">
+      <Project>{A913C0DE-EDD6-4870-9DB7-A51F8C7DD3C7}</Project>
+      <Name>SpotifyAuthentication.iOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

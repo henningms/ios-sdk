@@ -542,7 +542,7 @@ namespace SpotifyMetadata.iOS
 
 	// @interface SPTUser : SPTJSONObjectBase
 	[BaseType(typeof(SPTJSONObjectBase))]
-	interface SPTUser : SPTJSONObjectBase
+	interface SPTUser
 	{
 		[Export("displayName")]
 		string DisplayName { get; }
@@ -575,23 +575,23 @@ namespace SpotifyMetadata.iOS
 		SPTProduct Product { get; }
 
 		[Static]
-		[Export("createRequestForCurrentUserWithAccessToken:accessToken:error")]
+		[Export("createRequestForCurrentUserWithAccessToken:error:")]
 		NSUrlRequest CreateRequestForCurrentUserWithAccessToken(string accessToken, out NSError error);
 
 		[Static]
-		[Export("requestCurrentUserWithAccessToken:accessToken:block")]
+		[Export("requestCurrentUserWithAccessToken:block:")]
 		void RequestCurrentUserWithAccessToken(string accessToken, SPTRequestCallback block);
 
 		[Static]
-		[Export("requestUser:username:accessToken:block")]
+		[Export("requestUser:accessToken:block:")]
 		void RequestUser(string username, string accessToken, SPTRequestCallback block);
 
 		[Static]
-		[Export("userFromData:data:response:error")]
+		[Export("userFromData:response:error:")]
 		SPTUser UserFromData(NSData data, NSUrlResponse response, out NSError error);
 
 		[Static]
-		[Export("userFromDecodedJSON:decodedObject:error")]
+		[Export("userFromDecodedJSON:error:")]
 		SPTUser UserFromDecodedJson(NSObject decodedObject, out NSError error);
 	}
 
@@ -606,7 +606,7 @@ namespace SpotifyMetadata.iOS
 		NSUrl ImageUrl { get; }
 
 		[Static]
-		[Export("imageFromDecodedJSON:decodedObject:error")]
+		[Export("imageFromDecodedJSON:error:")]
 		SPTImage ImageFromDecodedJSON(NSObject decodedObject, out NSError error);
 	}
 
@@ -642,7 +642,7 @@ namespace SpotifyMetadata.iOS
 		string[] AvailableTerritories { get; }
 
 		[Static]
-		[Export("partialAlbumFromDecodedJSON:decodedObject:error")]
+		[Export("partialAlbumFromDecodedJSON:error:")]
 		SPTPartialAlbum FromDecodedJSON(NSObject decodedObject, out NSError error);
 	}
 }
